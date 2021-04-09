@@ -18,7 +18,7 @@ describe('ripe-banana-kat routes', () => {
     });
 
     expect(actor.body).toEqual({
-      id: expect.any(String),
+      id: expect.any(Number),
       name: 'Reese Witherspoon',
       dob: 'March 26, 1976',
       pob: 'New Orleans, Louisiana'
