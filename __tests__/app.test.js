@@ -112,7 +112,7 @@ describe('ripe-banana-kat routes', () => {
     });
   });
 
-  it.only('gets all reviewers', async () => {
+  it('gets all reviewers', async () => {
     const { body } = await request(app).get('/api/v1/reviewers');
 
     expect(body).toEqual([
@@ -122,5 +122,20 @@ describe('ripe-banana-kat routes', () => {
         company: expect.any(String),
       },
     ]);
+  });
+
+  it.only('updates reviewer by id', async () => {
+    const { body } = await (await request(app).put('/api/v1/reviewers/1')).send(
+      {
+        name: 'Updated Name',
+        company: 'Updated Company',
+      }
+    );
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      name: 'Updated Name',
+      company: 'Updated Company',
+    });
   });
 });
