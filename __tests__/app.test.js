@@ -2,6 +2,7 @@ const faker = require('faker');
 const request = require('supertest');
 const app = require('../lib/app');
 const { Actor } = require('../lib/models/Actor');
+const { Studio } = require('../lib/models/Studio');
 const db = require('../lib/utils/database');
 
 describe('ripe-banana-kat routes', () => {
@@ -10,11 +11,18 @@ describe('ripe-banana-kat routes', () => {
   });
 
   let testActor;
+  let testStudio;
   beforeEach(async () => {
     testActor = await Actor.create({
       name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
       dob: faker.date.past(),
       pob: faker.address.city(),
+    });
+    testStudio = await Studio.create({
+      name: faker.company.companyName(),
+      city: faker.address.city(),
+      state: faker.address.stateAbbr(),
+      country: faker.address.country(),
     });
   });
 
@@ -72,5 +80,18 @@ describe('ripe-banana-kat routes', () => {
       state: 'CA',
       country: 'USA',
     });
+  });
+  it('gets all studios', async () => {
+    const { body } = await response(app).get('/api/v1/studios');
+
+    expect(body).toEqual([
+      {
+        id: expect.any(Number),
+        name: expect.any(String),
+        city: expect.any(String),
+        state: expect.any(String),
+        country: expect.any(String),
+      },
+    ]);
   });
 });
