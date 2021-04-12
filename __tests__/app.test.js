@@ -88,9 +88,6 @@ describe('ripe-banana-kat routes', () => {
       {
         id: expect.any(Number),
         name: expect.any(String),
-        city: expect.any(String),
-        state: expect.any(String),
-        country: expect.any(String),
       },
     ]);
   });
