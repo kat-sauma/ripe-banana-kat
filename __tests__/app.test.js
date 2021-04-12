@@ -36,7 +36,14 @@ describe('ripe-banana-kat routes', () => {
   it('gets a list of actors', async () => {
     const { body } = await request(app).get('/api/v1/actors');
 
-    expect(body).toEqual([testActor]);
+    expect(body).toEqual([
+      {
+        id: expect.any(Number),
+        name: expect.any(String),
+        pob: expect.any(String),
+        dob: expect.any(String),
+      },
+    ]);
   });
 
   it('gets an actor by id', async () => {
