@@ -151,7 +151,7 @@ describe('ripe-banana-kat routes', () => {
     expect(body).toEqual({ deleted: '👍' });
   });
 
-  it.only('creates a film', async () => {
+  it('creates a film', async () => {
     const { body } = await request(app)
     .post('/api/v1/films')
     .send({
@@ -164,5 +164,16 @@ describe('ripe-banana-kat routes', () => {
       title: 'Cry Baby',
       released: 1990
     })
+  })
+
+  it.only('gets all films', async () => {
+    const { body } = request(app)
+    .get('/api/v1/films')
+
+    expect(body).toEqual([{
+      id: expect.any(Number),
+      title: expect.any(String),
+      released: expect.any(Number),
+    }])
   })
 });
