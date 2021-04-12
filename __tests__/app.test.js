@@ -2,6 +2,7 @@ const faker = require('faker');
 const request = require('supertest');
 const app = require('../lib/app');
 const { Actor } = require('../lib/models/Actor');
+const { Reviewer } = require('../lib/models/Reviewer');
 const { Studio } = require('../lib/models/Studio');
 const db = require('../lib/utils/database');
 
