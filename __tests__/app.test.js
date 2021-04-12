@@ -81,8 +81,8 @@ describe('ripe-banana-kat routes', () => {
       country: 'USA',
     });
   });
-  it('gets all studios', async () => {
-    const { body } = await response(app).get('/api/v1/studios');
+  it.only('gets all studios', async () => {
+    const { body } = await request(app).get('/api/v1/studios');
 
     expect(body).toEqual([
       {
