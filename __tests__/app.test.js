@@ -34,7 +34,7 @@ describe('ripe-banana-kat routes', () => {
     });
     testFilm = await Film.create({
       title: faker.fake('{{company.catchPhraseAdjective}}, {{company.bsNoun}}'),
-      released: faker.date.past(),
+      released: 1990,
     });
   });
 
@@ -145,24 +145,24 @@ describe('ripe-banana-kat routes', () => {
     ]);
   });
 
-  it.only('destroys reviewer by id', async () => {
+  it('destroys reviewer by id', async () => {
     const { body } = await request(app).delete('/api/v1/reviewers/1');
 
     expect(body).toEqual({ deleted: '👍' });
   });
 
-  it('creates a film', async () => {
+  it.only('creates a film', async () => {
     const { body } = await request(app)
     .post('/api/v1/films')
     .send({
       title: 'Cry Baby',
-      released: '1990'
+      released: 1990
     });
 
     expect(body).toEqual({
       id: expect.any(Number),
       title: 'Cry Baby',
-      released: '1990'
+      released: 1990
     })
   })
 });
