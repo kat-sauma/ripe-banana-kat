@@ -43,4 +43,21 @@ describe('ripe-banana-kat routes', () => {
       dob: expect.any(String),
     });
   });
+
+  it('creates a studio and adds it to the database', async () => {
+    const { body } = await request(app).post('/api/v1/studios').send({
+      name: 'Studio Ripebananakat',
+      city: 'LA',
+      state: 'CA',
+      country: 'USA',
+    });
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      name: 'Studio Ripebananakat',
+      city: 'LA',
+      state: 'CA',
+      country: 'USA',
+    });
+  });
 });
