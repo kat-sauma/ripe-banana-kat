@@ -2,6 +2,7 @@ const faker = require('faker');
 const request = require('supertest');
 const app = require('../lib/app');
 const { Actor } = require('../lib/models/Actor');
+const { Film } = require('../lib/models/Film');
 const { Reviewer } = require('../lib/models/Reviewer');
 const { Studio } = require('../lib/models/Studio');
 const db = require('../lib/utils/database');
@@ -14,6 +15,7 @@ describe('ripe-banana-kat routes', () => {
   let testActor;
   let testStudio;
   let testReviewer;
+  let testFilm;
   beforeEach(async () => {
     testActor = await Actor.create({
       name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
@@ -29,6 +31,10 @@ describe('ripe-banana-kat routes', () => {
     testReviewer = await Reviewer.create({
       name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
       company: faker.company.companyName(),
+    });
+    testFilm = await Film.create({
+      title: faker.fake('{{company.catchPhraseAdjective}}, {{company.bsNoun}}'),
+      released: faker.date.past(),
     });
   });
 
@@ -144,4 +150,19 @@ describe('ripe-banana-kat routes', () => {
 
     expect(body).toEqual({ deleted: '👍' });
   });
+
+  it('creates a film', async () => {
+    const { body } = await request(app)
+    .post('/api/v1/films')
+    .send({
+      title: 'Cry Baby',
+      released: '1990'
+    });
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      title: 'Cry Baby',
+      released: '1990'
+    })
+  })
 });
