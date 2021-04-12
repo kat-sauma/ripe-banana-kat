@@ -124,7 +124,7 @@ describe('ripe-banana-kat routes', () => {
     ]);
   });
 
-  it.only('updates reviewer by id', async () => {
+  it('updates reviewer by id', async () => {
     const { body } = await request(app).put('/api/v1/reviewers/1').send({
       name: 'Updated Name',
       company: 'Updated Company',
@@ -137,5 +137,11 @@ describe('ripe-banana-kat routes', () => {
         company: 'Updated Company',
       },
     ]);
+  });
+
+  it.only('destroys reviewer by id', async () => {
+    const { body } = await request(app).delete('/api/v1/reviewers/1');
+
+    expect(body).toEqual([]);
   });
 });
