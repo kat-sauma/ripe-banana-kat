@@ -12,6 +12,7 @@ describe('ripe-banana-kat routes', () => {
 
   let testActor;
   let testStudio;
+  let testReviewer;
   beforeEach(async () => {
     testActor = await Actor.create({
       name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
@@ -23,6 +24,10 @@ describe('ripe-banana-kat routes', () => {
       city: faker.address.city(),
       state: faker.address.stateAbbr(),
       country: faker.address.country(),
+    });
+    testReviewer = await Reviewer.create({
+      name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
+      company: faker.company.companyName(),
     });
   });
 
@@ -93,7 +98,7 @@ describe('ripe-banana-kat routes', () => {
     ]);
   });
 
-  it.only('posts a reviewer', async () => {
+  it('posts a reviewer', async () => {
     const { body } = await request(app).post('/api/v1/reviewers').send({
       name: 'Test Reviewer',
       company: 'Test Company',
@@ -104,5 +109,17 @@ describe('ripe-banana-kat routes', () => {
       name: expect.any(String),
       company: expect.any(String),
     });
+  });
+
+  it.only('gets all reviewers', async () => {
+    const { body } = await request(app).get('/api/v1/reviewers');
+
+    expect(body).toEqual([
+      {
+        id: expect.any(Number),
+        name: expect.any(String),
+        company: expect.any(String),
+      },
+    ]);
   });
 });
