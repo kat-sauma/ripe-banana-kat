@@ -1,3 +1,4 @@
+require('../lib/models/associations')
 const faker = require('faker');
 const request = require('supertest');
 const app = require('../lib/app');
@@ -35,6 +36,7 @@ describe('ripe-banana-kat routes', () => {
     testFilm = await Film.create({
       title: faker.fake('{{company.catchPhraseAdjective}}, {{company.bsNoun}}'),
       released: 1990,
+      StudioId: 1
     });
   });
 
@@ -167,13 +169,14 @@ describe('ripe-banana-kat routes', () => {
   })
 
   it.only('gets all films', async () => {
-    const { body } = request(app)
+    const { body } = await request(app)
     .get('/api/v1/films')
 
     expect(body).toEqual([{
       id: expect.any(Number),
       title: expect.any(String),
       released: expect.any(Number),
+      Studio: { id: expect.any(Number), name: expect.any(String) }
     }])
   })
 });
