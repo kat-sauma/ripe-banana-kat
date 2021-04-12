@@ -81,7 +81,8 @@ describe('ripe-banana-kat routes', () => {
       country: 'USA',
     });
   });
-  it.only('gets all studios', async () => {
+
+  it('gets all studios', async () => {
     const { body } = await request(app).get('/api/v1/studios');
 
     expect(body).toEqual([
@@ -90,5 +91,18 @@ describe('ripe-banana-kat routes', () => {
         name: expect.any(String),
       },
     ]);
+  });
+
+  it.only('posts a reviewer', async () => {
+    const { body } = await request(app).post('/api/v1/reviewers').send({
+      name: 'Test Reviewer',
+      company: 'Test Company',
+    });
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      name: expect.any(String),
+      company: expect.any(String),
+    });
   });
 });
