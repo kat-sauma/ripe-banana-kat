@@ -142,6 +142,6 @@ describe('ripe-banana-kat routes', () => {
   it.only('destroys reviewer by id', async () => {
     const { body } = await request(app).delete('/api/v1/reviewers/1');
 
-    expect(body).toEqual([]);
+    expect(body).toEqual({ deleted: '👍' });
   });
 });
