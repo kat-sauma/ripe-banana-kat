@@ -17,6 +17,7 @@ describe('ripe-banana-kat routes', () => {
   let testStudio;
   let testReviewer;
   let testFilm;
+  let testReview;
   beforeEach(async () => {
     testActor = await Actor.create({
       name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
@@ -38,6 +39,10 @@ describe('ripe-banana-kat routes', () => {
       released: 1990,
       StudioId: 1
     });
+    testReview = await Review.create({
+      rating: faker.datatype.number(100),
+      review: faker.lorem.paragraph()
+    })
   });
 
   it('creates an actor and adds them to the database', async () => {
@@ -168,7 +173,7 @@ describe('ripe-banana-kat routes', () => {
     })
   })
 
-  it.only('gets all films', async () => {
+  it('gets all films', async () => {
     const { body } = await request(app)
     .get('/api/v1/films')
 
@@ -178,5 +183,20 @@ describe('ripe-banana-kat routes', () => {
       released: expect.any(Number),
       Studio: { id: expect.any(Number), name: expect.any(String) }
     }])
+  })
+
+  it.only('creates a review', async () => {
+    const { body } = await request(app)
+    .post('./api/v1/reviews') 
+    .send({
+      rating: 'Test Rating',
+      review: 'Test Review'
+    });
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      rating: 'Test Rating',
+      review: 'Test Review'
+    })
   })
 });
