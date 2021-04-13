@@ -56,7 +56,7 @@ describe('ripe-banana-kat routes', () => {
     expect(body).toEqual({
       id: expect.any(Number),
       name: 'Reese Witherspoon',
-      dob: '1976-03-26T08:00:00.000Z',
+      dob: expect.any(String),
       pob: 'New Orleans, Louisiana',
     });
   });
