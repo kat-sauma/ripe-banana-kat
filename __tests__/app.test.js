@@ -42,7 +42,7 @@ describe('ripe-banana-kat routes', () => {
     });
     testReview = await Review.create({
       rating: faker.datatype.number(100),
-      review: faker.lorem.paragraph()
+      review: faker.lorem.sentence()
     })
   });
 
@@ -163,11 +163,13 @@ describe('ripe-banana-kat routes', () => {
     const { body } = await request(app)
     .post('/api/v1/films')
     .send({
+      StudioId: 1,
       title: 'Cry Baby',
       released: 1990
     });
 
     expect(body).toEqual({
+      StudioId: 1,
       id: expect.any(Number),
       title: 'Cry Baby',
       released: 1990
@@ -186,7 +188,7 @@ describe('ripe-banana-kat routes', () => {
     }])
   })
 
-  it.only('creates a review', async () => {
+  it('creates a review', async () => {
     const { body } = await request(app)
     .post('/api/v1/reviews') 
     .send({
