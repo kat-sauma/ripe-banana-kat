@@ -4,6 +4,7 @@ const request = require('supertest');
 const app = require('../lib/app');
 const { Actor } = require('../lib/models/Actor');
 const { Film } = require('../lib/models/Film');
+const { Review } = require('../lib/models/Review');
 const { Reviewer } = require('../lib/models/Reviewer');
 const { Studio } = require('../lib/models/Studio');
 const db = require('../lib/utils/database');
@@ -187,15 +188,15 @@ describe('ripe-banana-kat routes', () => {
 
   it.only('creates a review', async () => {
     const { body } = await request(app)
-    .post('./api/v1/reviews') 
+    .post('/api/v1/reviews') 
     .send({
-      rating: 'Test Rating',
+      rating: 5,
       review: 'Test Review'
     });
 
     expect(body).toEqual({
       id: expect.any(Number),
-      rating: 'Test Rating',
+      rating: expect.any(Number),
       review: 'Test Review'
     })
   })
