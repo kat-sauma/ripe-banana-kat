@@ -1,7 +1,10 @@
+require('../lib/models/associations')
 const faker = require('faker');
 const request = require('supertest');
 const app = require('../lib/app');
 const { Actor } = require('../lib/models/Actor');
+const { Film } = require('../lib/models/Film');
+const { Review } = require('../lib/models/Review');
 const { Reviewer } = require('../lib/models/Reviewer');
 const { Studio } = require('../lib/models/Studio');
 const db = require('../lib/utils/database');
@@ -14,6 +17,8 @@ describe('ripe-banana-kat routes', () => {
   let testActor;
   let testStudio;
   let testReviewer;
+  let testFilm;
+  let testReview;
   beforeEach(async () => {
     testActor = await Actor.create({
       name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
@@ -30,6 +35,15 @@ describe('ripe-banana-kat routes', () => {
       name: faker.fake('{{name.lastName}}, {{name.firstName}}'),
       company: faker.company.companyName(),
     });
+    testFilm = await Film.create({
+      title: faker.fake('{{company.catchPhraseAdjective}}, {{company.bsNoun}}'),
+      released: 1990,
+      StudioId: 1
+    });
+    testReview = await Review.create({
+      rating: faker.datatype.number(100),
+      review: faker.lorem.paragraph()
+    })
   });
 
   it('creates an actor and adds them to the database', async () => {
@@ -139,9 +153,51 @@ describe('ripe-banana-kat routes', () => {
     ]);
   });
 
-  it.only('destroys reviewer by id', async () => {
+  it('destroys reviewer by id', async () => {
     const { body } = await request(app).delete('/api/v1/reviewers/1');
 
     expect(body).toEqual({ deleted: '👍' });
   });
+
+  it('creates a film', async () => {
+    const { body } = await request(app)
+    .post('/api/v1/films')
+    .send({
+      title: 'Cry Baby',
+      released: 1990
+    });
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      title: 'Cry Baby',
+      released: 1990
+    })
+  })
+
+  it('gets all films', async () => {
+    const { body } = await request(app)
+    .get('/api/v1/films')
+
+    expect(body).toEqual([{
+      id: expect.any(Number),
+      title: expect.any(String),
+      released: expect.any(Number),
+      Studio: { id: expect.any(Number), name: expect.any(String) }
+    }])
+  })
+
+  it.only('creates a review', async () => {
+    const { body } = await request(app)
+    .post('/api/v1/reviews') 
+    .send({
+      rating: 5,
+      review: 'Test Review'
+    });
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+      rating: expect.any(Number),
+      review: 'Test Review'
+    })
+  })
 });
